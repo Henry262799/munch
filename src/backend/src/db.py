@@ -3,8 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 # Default metadata object will be used after since no metadata variable is supplied initially
 db = SQLAlchemy()
 
-# Classes here per table and column
-class User(db.model):
+class User(db.Model):
     """
         ORM model for Users
     """
@@ -23,7 +22,7 @@ class User(db.model):
     def serialize(self):
         pass
 
-class Post(db.model):
+class Post(db.Model):
     """
         ORM model for a Post
     """
