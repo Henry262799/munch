@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  munch:
+    image: henry262799/munch:v1
+    ports: "8000:8000"
+
