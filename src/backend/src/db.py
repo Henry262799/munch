@@ -110,14 +110,14 @@ class MealPlan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-    meal_type = db.Column(db.String, nullable=False)
-    date = db.Column(db.String, nullable=False)
+    plan_type = db.Column(db.String, nullable=False)
+    plan_date = db.Column(db.String, nullable=False)
 
     def serialize(self):
         return {
             'id': self.id,
             'user_id': self.user_id,
             'post_id': self.post_id,
-            'meal_type': self.meal_type,
-            'date': self.date
+            'meal_type': self.plan_type,
+            'date': self.plan_date
         }
