@@ -14,6 +14,9 @@ class User(db.Model):
     last_name= db.Column(db.String, nullable=False)
     username= db.Column(db.String, nullable=False)
     posts = db.relationship('Post', backref='user', lazy=True)
+    saved_posts = db.relationship('Post', secondary='saved_posts', lazy='subquery',
+                                  backref=db.backref('saved_by', lazy=True))
+
 
     def __init__(self, **kwargs):
         self.first_name= kwargs.get("first_name")
@@ -54,7 +57,6 @@ class Post(db.Model):
         self.date= kwargs.get("date")       # date format?
         self.user_id= kwargs.get("user_id")
         self.likes= kwargs.get("likes")
-        self.comments = db.relationship('Comment', backref='post', lazy=True)
     
     def serialize(self):
         return {
@@ -97,3 +99,25 @@ class Comment(db.Model):
         }
 
 
+class SavedPost(db.Model):
+    __tablename__ = 'saved_posts'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key=True)
+
+
+class MealPlan(db.Model):
+    __tablename__ = 'meal_plans'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    meal_type = db.Column(db.String, nullable=False)
+    date = db.Column(db.String, nullable=False)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'post_id': self.post_id,
+            'meal_type': self.meal_type,
+            'date': self.date
+        }
