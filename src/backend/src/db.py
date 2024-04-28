@@ -105,12 +105,18 @@ class Comment(db.Model):
 
 
 class SavedPost(db.Model):
+    """
+        ORM model for saved posts
+    """
     __tablename__ = 'saved_posts'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key=True)
 
 
 class MealPlan(db.Model):
+    """
+        ORM model for meal plan
+    """
     __tablename__ = 'meal_plans'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
