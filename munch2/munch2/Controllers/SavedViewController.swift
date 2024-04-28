@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class SavedViewController: UIViewController {
     
     // MARK: - Properties (view)
     
