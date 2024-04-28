@@ -18,6 +18,7 @@ class User(db.Model):
                                   backref=db.backref('saved_by', lazy=True))
 
 
+
     def __init__(self, **kwargs):
         self.first_name= kwargs.get("first_name")
         self.last_name= kwargs.get("last_name")
@@ -47,6 +48,8 @@ class Post(db.Model):
     date = db.Column(db.String, nullable=False)
     likes = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    comments = db.relationship('Comment', backref='post', lazy=True, cascade='all, delete-orphan')
+
 
     def __init__(self, **kwargs):
         self.title= kwargs.get("title")
@@ -80,7 +83,7 @@ class Comment(db.Model):
     __tablename__= "comment"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
-    # user_id = 
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     date = db.Column(db.String, nullable=False)
     message = db.Column(db.String, nullable=False)
 
@@ -88,24 +91,32 @@ class Comment(db.Model):
     def __init__(self, **kwargs):
         self.message = kwargs.get("message")
         self.post_id = kwargs.get("post_id")
+        self.author_id = kwargs.get("author_id")
         self.date = kwargs.get("date")
 
     def serialize(self):
         return {
             'id': self.id,
             'post_id': self.post_id,
+            'author_id': self.author_id,
             'date': self.date,
             'message': self.message,
         }
 
 
 class SavedPost(db.Model):
+    """
+        ORM model for saved posts
+    """
     __tablename__ = 'saved_posts'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key=True)
 
 
 class MealPlan(db.Model):
+    """
+        ORM model for meal plan
+    """
     __tablename__ = 'meal_plans'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
